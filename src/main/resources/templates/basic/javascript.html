@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<!-- 자바스크립트 인라인 사용 전 -->
+<script> // 순수한 자바스크립트 코드에 타임리프 넣었을 때
+  //1. 텍스트 렌더링
+  var username = [[${user.username}]];
+  var age = [[${user.age}]];
+
+  //2. 자바스크립트 내추럴 템플릿
+  var username2 = /*[[${user.username}]]*/ "test username";
+
+  //3. 객체
+  var user = [[${user}]];
+</script>
+
+<!-- 자바스크립트 인라인 사용 후 -->
+<script th:inline="javascript">
+  //1. 텍스트 렌더링
+  var username = [[${user.username}]];
+  var age = [[${user.age}]];
+
+  //2. 자바스크립트 내추럴 템플릿
+  var username2 = /*[[${user.username}]]*/ "test username"; //서버에서 렌더링되면 주석 안의 내용이 나온다.
+
+  //3. 객체
+  var user = [[${user}]]; //객체가 json으로 바뀌어 렌더링된다.
+</script>
+
+<!-- 자바스크립트 인라인 each -->
+<script th:inline="javascript">
+  [# th:each="user, stat : ${users}"]
+  var user[[${stat.count}]] = [[${user}]]; //[[${user}]] 부분은 객채이기 때문에 json으로 치환
+  [/]
+</script>
+
+</body>
+</html>
